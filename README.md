@@ -24,4 +24,3 @@ Une fois le serveur démarré, vous pouvez accéder à l'API à l'adresse `http:
 ## Licence
 
 Ce projet est sous licence ISC. Voir le fichier `LICENSE` pour plus d'informations.
-```
