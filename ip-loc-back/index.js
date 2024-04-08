@@ -1,11 +1,14 @@
 require('dotenv').config();
 const express = require('express');
+const { connectToDatabase, pingDatabase } = require('./db/database');
+const { ipController } = require('./controllers/IPController');
+const IP = require('./models/IP');
 const swaggerUi = require('swagger-ui-express');
 const swaggerJsdoc = require('swagger-jsdoc');
 const app = express();
-const mongoose = require('mongoose');
 
-const uri = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@cluster0.8w9vhnm.mongodb.net/?retryWrites=true&w=majority`;
+const app = express();
+const port = process.env.PORT || 8080;
 
 // Options de configuration pour swagger-jsdoc
 const swaggerOptions = {
@@ -21,25 +24,25 @@ const swaggerOptions = {
 };
 
 const swaggerSpec = swaggerJsdoc(swaggerOptions);
-const port = 8080;
 
-// Route pour servir la documentation Swagger UI
+// Routes
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+app.use("/ip", ipController(IP));
+
+function startServer() {
+  app.listen(port, () => {
+    console.log(`[RUN] App listening on 127.0.0.1:${port}`);
+  });
+}
 
 async function run() {
   try {
-    await mongoose.connect(uri);
-    console.log("[SETUP] Connected successfully to the database using Mongoose");
+    await connectToDatabase();
+    await pingDatabase();
+    startServer();
   } catch (error) {
     console.error("Could not connect to the database", error);
-  } finally {
-    await mongoose.disconnect();
   }
 }
-
-
-app.listen(port, () => {
-  console.log(`Serveur démarré sur http://localhost:${port}`);
-});
 
 run().catch(console.error);
