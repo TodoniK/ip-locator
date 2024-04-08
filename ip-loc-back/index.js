@@ -1,16 +1,27 @@
 require('dotenv').config();
-const mongoose = require('mongoose');
+const express = require('express');
+const { connectToDatabase, pingDatabase } = require('./db/database');
+const { ipController } = require('./controllers/IPController');
+const IP = require('./models/IP');
 
-const uri = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@cluster0.8w9vhnm.mongodb.net/?retryWrites=true&w=majority`;
+const app = express();
+const port = process.env.PORT || 8080;
+
+app.use("/ip", ipController(IP));
+
+function startServer() {
+  app.listen(port, () => {
+    console.log(`[RUN] App listening on 127.0.0.1:${port}`);
+  });
+}
 
 async function run() {
   try {
-    await mongoose.connect(uri);
-    console.log("[SETUP] Connected successfully to the database using Mongoose");
+    await connectToDatabase();
+    await pingDatabase();
+    startServer();
   } catch (error) {
     console.error("Could not connect to the database", error);
-  } finally {
-    await mongoose.disconnect();
   }
 }
 
