@@ -5,7 +5,6 @@ const { ipController } = require('./controllers/IPController');
 const IP = require('./models/IP');
 const swaggerUi = require('swagger-ui-express');
 const swaggerJsdoc = require('swagger-jsdoc');
-const app = express();
 
 const app = express();
 const port = process.env.PORT || 8080;
