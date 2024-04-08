@@ -1,24 +1,17 @@
+require('dotenv').config();
+const mongoose = require('mongoose');
 
-require('dotenv').config()
-const { MongoClient, ServerApiVersion } = require('mongodb');
-const uri = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@cluster0.8w9vhnm.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
-
-const client = new MongoClient(uri, {
-  serverApi: {
-    version: ServerApiVersion.v1,
-    strict: true,
-    deprecationErrors: true,
-  }
-});
+const uri = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@cluster0.8w9vhnm.mongodb.net/?retryWrites=true&w=majority`;
 
 async function run() {
   try {
-    await client.connect();
-    // Send a ping to confirm a successful connection
-    await client.db("admin").command({ ping: 1 });
-    console.log("[SETUP] Connected successfully to the database");
+    await mongoose.connect(uri);
+    console.log("[SETUP] Connected successfully to the database using Mongoose");
+  } catch (error) {
+    console.error("Could not connect to the database", error);
   } finally {
-    await client.close();
+    await mongoose.disconnect();
   }
 }
-run().catch(console.dir);
+
+run().catch(console.error);
