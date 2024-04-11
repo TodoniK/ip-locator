@@ -2,12 +2,8 @@ import axios from 'axios';
 
 const BASE_URL = 'http://localhost:8080';
 
-const postIp = async (ip) => {
-  const obj = {
-    'nom': 'Mon IP',
-    'query': ip,
-  };
-  const response = await axios.post(`${BASE_URL}/ip`, obj);
+const postIp = async (ipObj) => {
+  const response = await axios.post(`${BASE_URL}/ip`, ipObj);
   return response.data;
 }
 

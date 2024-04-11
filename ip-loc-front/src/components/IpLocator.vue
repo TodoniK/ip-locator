@@ -3,7 +3,7 @@
     <CustomMap :showMarker="showMarker" :ipDetails="ipDetails" :markerPosition="markerPosition" />
     <SearchBar @search-ip="handleSearch" />
     <DetailsPanel :showPanel="showDetailsPanel" :ipDetails="ipDetails" @close-panel="closeDetailsPanel" />
-    <CustomModal :error="error" @reset-error="resetError" />
+    <CustomModal :error="error" :isError="isError" @reset-error="resetError" />
   </div>
 </template>
 
@@ -43,18 +43,22 @@ export default {
         as: ""
       },
       error: null,
+      isError: true,
     };
   },
   methods: {
-    handleSearch(ip) {
-      Api.postIp(ip)
+    handleSearch(ipObj) {
+      Api.postIp(ipObj)
         .then(response => {
           this.ipDetails = response;
           this.markerPosition = [this.ipDetails.lat, this.ipDetails.lon];
           this.showMarker = true;
           this.showDetailsPanel = true;
+          this.isError = false;
+          this.error = "Données récupérées avec succès";
         })
         .catch(error => {
+          this.isError = true;
           this.error = error.response.data.message;
         });
     },

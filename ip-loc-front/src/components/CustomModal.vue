@@ -1,5 +1,5 @@
 <template>
-  <div class="container" v-if="error">
+  <div class="container" :class="isError ? 'bg-red' : 'bg-green'" v-if="error">
     <div>{{ error }}</div>
   </div>
 </template>
@@ -10,6 +10,10 @@ export default {
     error: {
       type: String,
       default: null
+    },
+    isError: {
+      type: Boolean,
+      default: true
     }
   },
   data() {
@@ -31,7 +35,6 @@ export default {
 
 <style>
 .container {
-  background-color: #ee5253;
   color: #ffffff;
   padding: 0.5rem;
   position: fixed;
@@ -39,5 +42,13 @@ export default {
   left: 50%;
   transform: translateX(-50%);
   z-index: 1000;
+}
+
+.bg-red {
+  background-color: #ee5253;
+}
+
+.bg-green {
+  background-color: #10ac84;
 }
 </style>
