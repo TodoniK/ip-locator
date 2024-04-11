@@ -30,33 +30,50 @@ const mongoose = require('mongoose');
  *           description: Le nom associé à l'adresse IP
  *         country:
  *           type: string
+ *           description: Le nom du pays
  *         countryCode:
  *           type: string
+ *           description: Le code du pays
  *         region:
  *           type: string
+ *           description: Le code de la région
  *         regionName:
  *           type: string
+ *           description: Le nom de la région
  *         city:
  *           type: string
+ *           description: Le nom de la ville
  *         zip:
  *           type: string
+ *           description: Le code postal
  *         lat:
  *           type: number
+ *           description: La latitude
  *         lon:
  *           type: number
+ *           description: La longitude
  *         timezone:
  *           type: string
+ *           description: Le fuseau horaire
  *         isp:
  *           type: string
+ *           description: Le fournisseur d'accès à Internet
+ *           nullable: true
  *         org:
  *           type: string
+ *           description: L'organisation
+ *           nullable: true
  *         as:
  *           type: string
+ *           description: Le système autonome
+ *           nullable: true
  */
 const ipSchema = new mongoose.Schema({
   query: {
     type: String,
-    required: true
+    required: true,
+    unique: true,
+    index: true
   },
   nom: {
     type: String,
@@ -100,15 +117,15 @@ const ipSchema = new mongoose.Schema({
   },
   isp: {
     type: String,
-    required: true
+    required: false
   },
   org: {
     type: String,
-    required: true
+    required: false
   },
   as: {
     type: String,
-    required: true
+    required: false
   }
 });
 

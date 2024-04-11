@@ -1,5 +1,11 @@
 const express = require('express');
-const axios = require('axios'); // Assurez-vous d'installer axios avec npm ou yarn
+const multer = require('multer');
+const axios = require('axios');
+const csv = require('csv-parser');
+const fs = require('fs');
+const { promisify } = require('util');
+promisify(require('stream').pipeline);
+const upload = multer({ dest: 'uploads/' });
 
 function ipController(IP) {
   const router = express.Router();
@@ -26,6 +32,10 @@ function ipController(IP) {
    *         description: Adresse IP enregistrée avec succès
    *       400:
    *         description: Erreur de validation ou de requête
+   *       409:
+   *         description: Une adresse IP avec ce nom existe déjà
+   *       500:
+   *         description: Erreur lors de l'enregistrement de l'adresse IP
    */
   router.post("/", async (req, res) => {
     const { nom, query } = req.body;
@@ -34,6 +44,12 @@ function ipController(IP) {
     }
 
     try {
+      // Vérifier si l'adresse IP existe déjà
+      const existingIP = await IP.findOne({ nom: nom });
+      if (existingIP) {
+        return res.status(409).send({ message: "An IP with this name already exists" });
+      }
+
       // Utiliser l'API ip-api.com pour obtenir les informations de localisation
       const response = await axios.get(`http://ip-api.com/json/${query}`);
       if (response.data.status !== 'success') {
@@ -48,7 +64,95 @@ function ipController(IP) {
       await ip.save();
       res.status(201).send(ip);
     } catch (error) {
-      res.status(500).send({ message: "Error saving IP information", error: error });
+      if (error.code === 11000) {
+        // Gérer l'erreur de duplication
+        res.status(409).send({ message: "An IP with this name already exists" });
+      } else {
+        // Gérer les autres erreurs
+        res.status(500).send({ message: "Error saving IP information", error: error.message });
+      }
+    }
+  });
+
+  /**
+   * @swagger
+   * /ip/importCSV:
+   *   post:
+   *     summary: Importe des adresses IP à partir d'un fichier CSV
+   *     tags: [IP]
+   *     requestBody:
+   *       required: true
+   *       content:
+   *         multipart/form-data:
+   *           schema:
+   *             type: object
+   *             properties:
+   *               file:
+   *                 type: string
+   *                 format: binary
+   *     responses:
+   *       200:
+   *         description: Importation réussie
+   *       400:
+   *         description: Erreur de validation lors de l'import
+   *       500:
+   *         description: Erreur du fichier CSV
+   */
+  router.post("/importCSV", upload.single('file'), async (req, res) => {
+    if (!req.file) {
+      return res.status(400).send({ message: "No CSV file provided" });
+    }
+
+    const results = [];
+
+    try {
+      // Créer un flux de lecture pour le fichier CSV
+      fs.createReadStream(req.file.path)
+          .pipe(csv(['nom', 'query'])) // Assurez-vous que les en-têtes correspondent à ceux de votre fichier CSV
+          .on('data', (data) => results.push(data))
+          .on('end', async () => {
+            try {
+              // Supprimer le fichier CSV après l'avoir lu
+              fs.unlinkSync(req.file.path);
+
+              const errors = [];
+              const savePromises = results.map(async (row) => {
+                try {
+                  // Vérifier si l'adresse IP existe déjà
+                  const existingIP = await IP.findOne({ nom: row.nom });
+                  if (existingIP) {
+                    throw new Error('An IP with this name already exists');
+                  }
+
+                  const response = await axios.get(`http://ip-api.com/json/${row.query}`);
+                  if (response.data.status === 'success') {
+                    const ipData = { ...response.data, nom: row.nom };
+                    const ip = new IP(ipData);
+                    await ip.save();
+                  } else {
+                    // Ajouter l'erreur à la liste des erreurs
+                    errors.push({ query: row.query, message: response.data.message });
+                  }
+                } catch (error) {
+                  // Ajouter l'erreur à la liste des erreurs
+                  errors.push({ query: row.query, error: error.message });
+                }
+              });
+
+              // Attendre que toutes les promesses soient résolues
+              await Promise.all(savePromises);
+
+              if (errors.length > 0) {
+                res.status(400).send({ message: "Some IPs could not be imported", errors: errors });
+              } else {
+                res.status(200).send({ message: "All IPs imported successfully" });
+              }
+            } catch (error) {
+              res.status(500).send({ message: "Error during the import process", error: error.message });
+            }
+          });
+    } catch (error) {
+        res.status(500).send({ message: "Error reading the CSV file", error: error.message });
     }
   });
 
