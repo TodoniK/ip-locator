@@ -19,10 +19,13 @@ const swaggerOptions = {
       description: 'Documentation de l\'API IP Locator permettant de localiser une adresse IP',
     },
   },
-  apis: ['./routes/*.js'], // Emplacement des fichiers contenant les annotations Swagger
+  apis: ['./models/*.js', './controllers/*.js'], // Emplacement des fichiers contenant les annotations Swagger
 };
 
 const swaggerSpec = swaggerJsdoc(swaggerOptions);
+
+// Middleware pour analyser le corps des requêtes JSON
+app.use(express.json());
 
 // Routes
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
