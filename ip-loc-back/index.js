@@ -1,5 +1,6 @@
 require('dotenv').config();
 const express = require('express');
+const cors = require('cors');
 const { connectToDatabase, pingDatabase } = require('./db/database');
 const { ipController } = require('./controllers/IPController');
 const IP = require('./models/IP');
@@ -26,6 +27,10 @@ const swaggerSpec = swaggerJsdoc(swaggerOptions);
 
 // Middleware pour analyser le corps des requêtes JSON
 app.use(express.json());
+
+app.use(cors({
+  origin: 'http://localhost:3000',
+}));
 
 // Routes
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));

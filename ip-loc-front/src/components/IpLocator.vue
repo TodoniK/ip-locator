@@ -1,8 +1,9 @@
 <template>
   <div>
-    <CustomMap :center="mapCenter" :showMarker="showMarker" :ipDetails="ipDetails" />
+    <CustomMap :showMarker="showMarker" :ipDetails="ipDetails" :markerPosition="markerPosition" />
     <SearchBar @search-ip="handleSearch" />
     <DetailsPanel :showPanel="showDetailsPanel" :ipDetails="ipDetails" @close-panel="closeDetailsPanel" />
+    <CustomModal :error="error" @reset-error="resetError" />
   </div>
 </template>
 
@@ -10,16 +11,18 @@
 import CustomMap from './CustomMap.vue';
 import SearchBar from './SearchBar.vue';
 import DetailsPanel from './DetailsPanel.vue';
+import Api from '@/service/Api';
+import CustomModal from './CustomModal.vue';
 
 export default {
   components: {
     CustomMap,
     SearchBar,
-    DetailsPanel
+    DetailsPanel,
+    CustomModal
   },
   data() {
     return {
-      mapCenter: [47.41322, -1.219482],
       markerPosition: [44.8333, -0.5667],
       showDetailsPanel: false,
       showMarker: false,
@@ -38,34 +41,29 @@ export default {
         isp: "",
         org: "",
         as: ""
-      }
+      },
+      error: null,
     };
   },
   methods: {
     handleSearch(ip) {
-      console.log(`Recherche de l'IP: ${ip}`);
-      this.showMarker = true;
-      this.showDetailsPanel = true;
-      this.ipDetails = {
-        query: "192.168.1.1",
-        nom: "MonNom",
-        country: "France",
-        countryCode: "FR",
-        region: "IDF",
-        regionName: "Île-de-France",
-        city: "Paris",
-        zip: "75000",
-        lat: 48.8566,
-        lon: 2.3522,
-        timezone: "Europe/Paris",
-        isp: "MonFournisseurInternet",
-        org: "MonOrganisation",
-        as: "AS12345 MonAutonomousSystem"
-      };
+      Api.postIp(ip)
+        .then(response => {
+          this.ipDetails = response;
+          this.markerPosition = [this.ipDetails.lat, this.ipDetails.lon];
+          this.showMarker = true;
+          this.showDetailsPanel = true;
+        })
+        .catch(error => {
+          this.error = error.response.data.message;
+        });
     },
     closeDetailsPanel() {
       this.showDetailsPanel = false;
     },
+    resetError() {
+      this.error = null;
+    }
   }
 };
 </script>

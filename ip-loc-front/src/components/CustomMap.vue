@@ -1,6 +1,6 @@
 <template>
   <div style="height:100vh; width:100vw">
-    <l-map ref="map" :zoom="3" :center="center">
+    <l-map ref="map" :zoom="3" :center="markerPosition ?? [47.41322, -1.219482]">
       <l-tile-layer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" layer-type="base"
         name="OpenStreetMap"></l-tile-layer>
       <l-marker :lat-lng="[ipDetails.lat, ipDetails.lon]" v-if="showMarker">
@@ -22,10 +22,6 @@ export default {
     LPopup
   },
   props: {
-    center: {
-      type: Array,
-      required: true
-    },
     markerPosition: {
       type: Array,
       required: true
