@@ -2,11 +2,14 @@
   <div class="details-panel" v-if="showPanel">
     <div class="details-inner">
       <div class="flex">
-        <h2>Details</h2>
+        <h2>Details "{{ ipDetails.nom }}"</h2>
         <button @click="$emit('close-panel')">x</button>
       </div>
       <p>IP Address: {{ ipDetails.query }}</p>
-      <p>Location: {{ ipDetails.location }}</p>
+      <p>Country: {{ ipDetails.country }}, {{ ipDetails.countryCode }}</p>
+      <p>Region: {{ ipDetails.region }}, {{ ipDetails.regionName }}</p>
+      <p>City: {{ ipDetails.city }}, {{ ipDetails.zip }}</p>
+      <p>Latitude: {{ ipDetails.lat }}, Longitude: {{ ipDetails.lon }}</p>
       <p>Timezone: {{ ipDetails.timezone }}</p>
       <p>ISP: {{ ipDetails.isp }}</p>
     </div>
