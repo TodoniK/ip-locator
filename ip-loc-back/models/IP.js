@@ -72,12 +72,13 @@ const ipSchema = new mongoose.Schema({
   query: {
     type: String,
     required: true,
-    unique: true,
-    index: true
+    unique: true
   },
   nom: {
     type: String,
-    required: true
+    required: true,
+    unique: true,
+    index: true
   },
   country: {
     type: String,

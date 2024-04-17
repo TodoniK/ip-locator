@@ -47,7 +47,7 @@ function ipController(IP) {
       // Vérifier si l'adresse IP existe déjà
       const existingIP = await IP.findOne({ nom: nom });
       if (existingIP) {
-        return res.status(409).send({ message: "An IP with this name already exists" });
+        return res.status(409).send({ message: "This IP already exists" });
       }
 
       // Utiliser l'API ip-api.com pour obtenir les informations de localisation
@@ -239,19 +239,27 @@ function ipController(IP) {
    *         description: Erreur interne du serveur
    */
   router.get("/search/:ip", async (req, res) => {
-    const ip = req.params.ip;
+    const ipToSearch = req.params.ip;
 
     try {
-      const response = await axios.get(`http://ip-api.com/json/${ip}`);
-      if (response.data.status === 'success') {
-        // Ajouter le champ 'nom' avec la valeur "unnamed" à la réponse
-        const ipData = { ...response.data, nom: "unnamed" };
-        res.status(200).send(ipData);
+      // Vérifier si l'adresse IP existe dans la base de données
+      const ipRecord = await IP.findOne({ query: ipToSearch });
+      if (ipRecord) {
+        // Si l'adresse IP existe, renvoyer les informations stockées
+        res.status(200).send(ipRecord);
       } else {
-        res.status(404).send({ message: "Pas d'informations pour cette adresse !", details: response.data });
+        // Si l'adresse IP n'existe pas, faire une requête à l'API ip-api.com
+        const response = await axios.get(`http://ip-api.com/json/${ipToSearch}`);
+        if (response.data.status === 'success') {
+          // Ajouter le champ 'nom' avec la valeur "unnamed" à la réponse
+          const ipData = { ...response.data, nom: "unnamed" };
+          res.status(200).send(ipData);
+        } else {
+          res.status(404).send({ message: "Information for the IP address not found", details: response.data });
+        }
       }
     } catch (error) {
-      res.status(500).send({ message: "Error lors de la requête vers API IP.", error: error.message });
+      res.status(500).send({ message: "Error retrieving IP information", error: error.message });
     }
   });
 
