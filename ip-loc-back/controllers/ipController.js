@@ -219,6 +219,44 @@ function ipController(IP) {
 
   /**
    * @swagger
+   * /ip/search/{ip}:
+   *   get:
+   *     summary: Recherche des informations pour une adresse IP spécifique
+   *     tags: [IP]
+   *     parameters:
+   *       - in: path
+   *         name: ip
+   *         required: true
+   *         schema:
+   *           type: string
+   *         description: L'adresse IP à rechercher
+   *     responses:
+   *       200:
+   *         description: Informations de l'adresse IP retournées avec succès
+   *       404:
+   *         description: Informations pour l'adresse IP non trouvées
+   *       500:
+   *         description: Erreur interne du serveur
+   */
+  router.get("/search/:ip", async (req, res) => {
+    const ip = req.params.ip;
+
+    try {
+      const response = await axios.get(`http://ip-api.com/json/${ip}`);
+      if (response.data.status === 'success') {
+        // Ajouter le champ 'nom' avec la valeur "unnamed" à la réponse
+        const ipData = { ...response.data, nom: "unnamed" };
+        res.status(200).send(ipData);
+      } else {
+        res.status(404).send({ message: "Pas d'informations pour cette adresse !", details: response.data });
+      }
+    } catch (error) {
+      res.status(500).send({ message: "Error lors de la requête vers API IP.", error: error.message });
+    }
+  });
+
+  /**
+   * @swagger
    * /ip/{nom}:
    *   put:
    *     summary: Met à jour une adresse IP par son nom
