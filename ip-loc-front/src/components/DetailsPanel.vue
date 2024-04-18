@@ -13,9 +13,9 @@
       <p>Timezone: {{ currentIp.timezone }}</p>
       <p>ISP: {{ currentIp.isp }}</p>
       <div class="details-actions">
-        <button class="delete-btn" @click="deleteIp">Delete</button>
+        <button class="button-danger" @click="deleteIp">Delete</button>
         <template v-if="!editing">
-          <button class="save-btn" @click="editing = true">Save</button>
+          <button class="button-success" @click="editing = true">Save</button>
         </template>
         <template v-else>
           <input type="text" v-model="newName" @keyup.enter="saveIp" placeholder="Marker name...">
@@ -115,54 +115,6 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
-}
-
-button {
-  font-size: 1.1em;
-  padding: .3rem .5rem;
-  border: 2px solid #bbb;
-}
-
-button:hover {
-  border-color: #888;
-  transition: border-color .3s;
-  cursor: pointer;
-}
-
-.delete-btn {
-  background-color: #ee5253;
-  border-color: #ee5253;
-  color: white;
-}
-
-.delete-btn:hover {
-  background-color: #ff6b6b;
-  border-color: #ff6b6b;
-  transition: none;
-}
-
-.edit-btn {
-  background-color: #feca57;
-  border-color: #feca57;
-  color: white;
-}
-
-.edit-btn:hover {
-  background-color: #ffed4a;
-  border-color: #ffed4a;
-  transition: none;
-}
-
-.save-btn {
-  background-color: #10ac84;
-  border-color: #10ac84;
-  color: white;
-}
-
-.save-btn:hover {
-  background-color: #26bc8a;
-  border-color: #26bc8a;
-  transition: none;
 }
 
 .details-actions {
