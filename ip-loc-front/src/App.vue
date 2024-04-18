@@ -10,6 +10,9 @@ import IpLocator from './components/IpLocator.vue';
 export default {
   components: {
     IpLocator
+  },
+  mounted() {
+    document.title = 'IP Locator';
   }
 };
 </script>
