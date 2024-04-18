@@ -6,6 +6,7 @@ const { ipController } = require('./controllers/IPController');
 const IP = require('./models/IP');
 const swaggerUi = require('swagger-ui-express');
 const swaggerJsdoc = require('swagger-jsdoc');
+const fs = require('fs');
 
 const app = express();
 const port = process.env.PORT || 8080;
@@ -23,7 +24,17 @@ const swaggerOptions = {
   apis: ['./models/*.js', './controllers/*.js'], // Emplacement des fichiers contenant les annotations Swagger
 };
 
+// Initialize swagger-jsdoc
 const swaggerSpec = swaggerJsdoc(swaggerOptions);
+
+// Write swagger.json to static folder
+fs.writeFile('./swagger.json', JSON.stringify(swaggerSpec, null, 2), (err) => {
+  if (err) {
+    console.error(err);
+  } else {
+    console.log('Successfully generated swagger.json');
+  }
+});
 
 // Middleware pour analyser le corps des requêtes JSON
 app.use(express.json());
