@@ -1,9 +1,10 @@
 <template>
-  <div>
-    <CustomMap :showMarker="showMarker" :ipDetails="ipDetails" :markerPosition="markerPosition" />
+  <div id="map">
+    <CustomMap :markers="markers" :current-marker="currentIp" @marker-clicked="handleMarkerClick" />
     <SearchBar @search-ip="handleSearch" />
-    <DetailsPanel :showPanel="showDetailsPanel" :ipDetails="ipDetails" @close-panel="closeDetailsPanel" />
-    <CustomModal :error="error" :isError="isError" @reset-error="resetError" />
+    <DetailsPanel v-if="Object.keys(currentIp).length !== 0" :current-ip="currentIp" @close-panel="currentIp = {}"
+      @update-ip="updateIp" @delete-ip="deleteIp" @error="displayError" />
+    <CustomModal :error="error" :isError="isError" @reset-error="error = null" />
   </div>
 </template>
 
@@ -15,60 +16,76 @@ import Api from '@/service/Api';
 import CustomModal from './CustomModal.vue';
 
 export default {
-  components: {
-    CustomMap,
-    SearchBar,
-    DetailsPanel,
-    CustomModal
-  },
+  components: { CustomMap, SearchBar, DetailsPanel, CustomModal },
   data() {
     return {
-      markerPosition: [44.8333, -0.5667],
-      showDetailsPanel: false,
-      showMarker: false,
-      ipDetails: {
-        query: "",
-        nom: "",
-        country: "",
-        countryCode: "",
-        region: "",
-        regionName: "",
-        city: "",
-        zip: "",
-        lat: 0,
-        lon: 0,
-        timezone: "",
-        isp: "",
-        org: "",
-        as: ""
-      },
+      markers: [],
+      currentIp: {},
       error: null,
       isError: true,
     };
   },
   methods: {
-    handleSearch(ipObj) {
-      Api.postIp(ipObj)
-        .then(response => {
-          this.ipDetails = response;
-          this.markerPosition = [this.ipDetails.lat, this.ipDetails.lon];
-          this.showMarker = true;
-          this.showDetailsPanel = true;
-          this.isError = false;
-          this.error = "Données récupérées avec succès";
+    async handleSearch(ip) {
+      try {
+        Api.searchIp(ip)
+          .then(response => {
+            this.currentIp = response;
+            this.isError = false;
+            this.error = "Données récupérées avec succès";
+          })
+          .catch(error => {
+            this.isError = true;
+            this.error = error.response.data.message;
+          });
+      } catch (error) {
+        this.isError = true;
+        this.error = error.response.data.message;
+      }
+    },
+    async handleMarkerClick(name) {
+      try {
+        Api.getIpByName(name)
+          .then(response => {
+            this.currentIp = response;
+            this.error = null;
+          })
+          .catch(error => {
+            this.isError = true;
+            this.error = error.response.data.message;
+          });
+      } catch (error) {
+        this.isError = true;
+        this.error = error.response.data.message;
+      }
+    },
+    updateIp(updateObj) {
+      this.currentIp = updateObj.newObj ? updateObj.newObj : {};
+      this.markers = this.markers.filter(marker => marker.nom !== updateObj.previousName);
+      if (updateObj.newObj)
+        this.markers.push(this.currentIp);
+    },
+    async deleteIp() {
+      Api.deleteIp(this.currentIp.nom)
+        .then(() => {
+          this.markers = this.markers.filter(marker => marker.nom !== this.currentIp.nom);
+          this.currentIp = {};
+          this.error = null;
         })
         .catch(error => {
-          this.isError = true;
           this.error = error.response.data.message;
         });
     },
-    closeDetailsPanel() {
-      this.showDetailsPanel = false;
+    displayError(error) {
+      this.isError = true;
+      this.error = error;
     },
-    resetError() {
-      this.error = null;
-    }
-  }
+  },
+  mounted() {
+    Api.getIps().then(response => {
+      this.markers = response;
+    });
+  },
 };
 </script>
 

@@ -1,8 +1,7 @@
 <template>
   <div class="search-bar">
-    <input type="text" v-model="searchName" placeholder="Enter a name..." />
     <input type="text" v-model="searchQuery" placeholder="Search an IP..." v-on:keypress="isLetter($event)" />
-    <button @click="search">Ajouter</button>
+    <button @click="search">Rechercher</button>
   </div>
 </template>
 
@@ -15,10 +14,7 @@ export default {
   },
   methods: {
     search() {
-      this.$emit('search-ip', {
-        nom: this.searchName,
-        query: this.searchQuery
-      });
+      this.$emit('search-ip', this.searchQuery);
     },
     isLetter(e) {
       let char = String.fromCharCode(e.keyCode);
