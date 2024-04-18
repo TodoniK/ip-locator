@@ -5,6 +5,7 @@
     <DetailsPanel v-if="Object.keys(currentIp).length !== 0" :current-ip="currentIp" @close-panel="currentIp = {}"
       @update-ip="updateIp" @delete-ip="deleteIp" @error="displayError" />
     <CustomModal :error="error" :isError="isError" @reset-error="error = null" />
+    <CSVImport @import-started="importFile" />
   </div>
 </template>
 
@@ -14,9 +15,10 @@ import SearchBar from './SearchBar.vue';
 import DetailsPanel from './DetailsPanel.vue';
 import Api from '@/service/Api';
 import CustomModal from './CustomModal.vue';
+import CSVImport from './CSVImport.vue';
 
 export default {
-  components: { CustomMap, SearchBar, DetailsPanel, CustomModal },
+  components: { CustomMap, SearchBar, DetailsPanel, CustomModal, CSVImport },
   data() {
     return {
       markers: [],
@@ -74,6 +76,28 @@ export default {
         })
         .catch(error => {
           this.error = error.response.data.message;
+        });
+    },
+    async importFile(file) {
+      Api.importCSV(file)
+        .then(response => {
+          this.isError = false;
+          this.error = response.message;
+        })
+        .catch(error => {
+          let errorMessage = error.response.data.message + '. ';
+          if (error.response.data.errors) {
+            errorMessage += error.response.data.errors[0].error;
+            error.response.data.errors.forEach(err => {
+              errorMessage += " - " + "(" + err.query + ")";
+            });
+          }
+          this.displayError(errorMessage);
+        })
+        .finally(() => {
+          Api.getIps().then(response => {
+            this.markers = response;
+          });
         });
     },
     displayError(error) {

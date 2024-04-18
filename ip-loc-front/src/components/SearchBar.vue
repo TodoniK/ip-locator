@@ -26,31 +26,6 @@ export default {
 </script>
 
 <style scoped>
-input {
-  font-size: 1.1em;
-  padding: .3rem .5rem;
-  border: 2px solid #bbb;
-}
-
-input:focus,
-button:hover {
-  outline: none;
-  border-color: #888;
-}
-
-input:hover,
-button:hover {
-  border-color: #888;
-  transition: border-color .3s;
-}
-
-button {
-  font-size: 1.1em;
-  padding: .3rem .5rem;
-  border: 2px solid #bbb;
-  border-left: none;
-}
-
 .search-bar {
   position: absolute;
   bottom: 30px;
