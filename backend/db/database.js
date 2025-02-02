@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 async function connectToDatabase() {
-  const uri = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@cluster0.8w9vhnm.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
+  const uri = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@ip-locator.wn5of.mongodb.net/?retryWrites=true&w=majority&appName=ip-locator`;
   await mongoose.connect(uri);
   console.log("[SETUP] Connected successfully to the database using Mongoose");
 }

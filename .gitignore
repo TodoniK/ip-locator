@@ -133,3 +133,4 @@ dist
 package-lock.json
 ip-loc-back/package-lock.json
 ip-loc-front/package-lock.json
+ip-loc-back/swagger.json

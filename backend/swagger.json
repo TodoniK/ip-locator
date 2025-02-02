@@ -1,0 +1,308 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "IP Locator",
+    "version": "1.0.0",
+    "description": "Documentation de l'API IP Locator permettant de localiser une adresse IP"
+  },
+  "paths": {
+    "/ip": {
+      "post": {
+        "summary": "Enregistre une nouvelle adresse IP avec un nom donné",
+        "tags": [
+          "IP"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "nom": {
+                    "type": "string"
+                  },
+                  "query": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Adresse IP enregistrée avec succès"
+          },
+          "400": {
+            "description": "Erreur de validation ou de requête"
+          },
+          "409": {
+            "description": "Une adresse IP avec ce nom existe déjà"
+          },
+          "500": {
+            "description": "Erreur lors de l'enregistrement de l'adresse IP"
+          }
+        }
+      },
+      "get": {
+        "summary": "Liste toutes les adresses IP",
+        "tags": [
+          "IP"
+        ],
+        "responses": {
+          "200": {
+            "description": "Liste des adresses IP",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/IP"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ip/importCSV": {
+      "post": {
+        "summary": "Importe des adresses IP à partir d'un fichier CSV",
+        "tags": [
+          "IP"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Importation réussie"
+          },
+          "400": {
+            "description": "Erreur de validation lors de l'import"
+          },
+          "500": {
+            "description": "Erreur du fichier CSV"
+          }
+        }
+      }
+    },
+    "/ip/{nom}": {
+      "get": {
+        "summary": "Récupère une adresse IP par son nom",
+        "tags": [
+          "IP"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "nom",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Le nom de l'adresse IP"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Détails de l'adresse IP",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IP"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Adresse IP non trouvée"
+          }
+        }
+      },
+      "put": {
+        "summary": "Met à jour une adresse IP par son nom",
+        "tags": [
+          "IP"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "nom",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Le nom de l'adresse IP"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Adresse IP mise à jour avec succès"
+          },
+          "400": {
+            "description": "Erreur de validation ou de requête"
+          },
+          "404": {
+            "description": "Adresse IP non trouvée"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Supprime une adresse IP par son nom",
+        "tags": [
+          "IP"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "nom",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Le nom de l'adresse IP"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Adresse IP supprimée avec succès"
+          },
+          "404": {
+            "description": "Adresse IP non trouvée"
+          }
+        }
+      }
+    },
+    "/ip/search/{ip}": {
+      "get": {
+        "summary": "Recherche des informations pour une adresse IP spécifique",
+        "tags": [
+          "IP"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "ip",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "L'adresse IP à rechercher"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Informations de l'adresse IP retournées avec succès"
+          },
+          "404": {
+            "description": "Informations pour l'adresse IP non trouvées"
+          },
+          "500": {
+            "description": "Erreur interne du serveur"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "IP": {
+        "type": "object",
+        "required": [
+          "query",
+          "nom",
+          "country",
+          "countryCode",
+          "region",
+          "regionName",
+          "city",
+          "zip",
+          "lat",
+          "lon",
+          "timezone",
+          "isp",
+          "org",
+          "as"
+        ],
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "L'adresse IP de la requête"
+          },
+          "nom": {
+            "type": "string",
+            "description": "Le nom associé à l'adresse IP"
+          },
+          "country": {
+            "type": "string",
+            "description": "Le nom du pays"
+          },
+          "countryCode": {
+            "type": "string",
+            "description": "Le code du pays"
+          },
+          "region": {
+            "type": "string",
+            "description": "Le code de la région"
+          },
+          "regionName": {
+            "type": "string",
+            "description": "Le nom de la région"
+          },
+          "city": {
+            "type": "string",
+            "description": "Le nom de la ville"
+          },
+          "zip": {
+            "type": "string",
+            "description": "Le code postal"
+          },
+          "lat": {
+            "type": "number",
+            "description": "La latitude"
+          },
+          "lon": {
+            "type": "number",
+            "description": "La longitude"
+          },
+          "timezone": {
+            "type": "string",
+            "description": "Le fuseau horaire"
+          },
+          "isp": {
+            "type": "string",
+            "description": "Le fournisseur d'accès à Internet",
+            "nullable": true
+          },
+          "org": {
+            "type": "string",
+            "description": "L'organisation",
+            "nullable": true
+          },
+          "as": {
+            "type": "string",
+            "description": "Le système autonome",
+            "nullable": true
+          }
+        }
+      }
+    }
+  },
+  "tags": []
+}
