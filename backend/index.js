@@ -9,7 +9,7 @@ const swaggerJsdoc = require('swagger-jsdoc');
 const fs = require('fs');
 
 const app = express();
-const port = process.env.PORT || 8080;
+const port = 8089;
 
 // Options de configuration pour swagger-jsdoc
 const swaggerOptions = {
@@ -40,7 +40,7 @@ fs.writeFile('./swagger.json', JSON.stringify(swaggerSpec, null, 2), (err) => {
 app.use(express.json());
 
 app.use(cors({
-  origin: 'http://localhost:3000',
+  origin: 'http://localhost:3002',
 }));
 
 // Routes

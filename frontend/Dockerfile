@@ -1,5 +1,5 @@
-# Utiliser une image Node.js officielle
-FROM node:14
+# Utiliser une image Node.js officielle plus récente
+FROM node:18
 
 # Définir le répertoire de travail
 WORKDIR /usr/src/app
@@ -13,11 +13,8 @@ RUN npm install
 # Copier le reste des fichiers de l'application
 COPY . .
 
-# Construire l'application pour la production
-RUN npm run build
-
 # Exposer le port de l'application
-EXPOSE 80
+EXPOSE 3002
 
 # Démarrer l'application
 CMD ["npm", "run", "serve"]
