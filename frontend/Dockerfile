@@ -1,20 +1,11 @@
-# Utiliser une image Node.js officielle plus récente
-FROM node:18
-
-# Définir le répertoire de travail
+FROM node:18 AS build
 WORKDIR /usr/src/app
-
-# Copier les fichiers package.json et package-lock.json
 COPY package*.json ./
-
-# Installer les dépendances
 RUN npm install
-
-# Copier le reste des fichiers de l'application
 COPY . .
+RUN npm run build
 
-# Exposer le port de l'application
-EXPOSE 3002
-
-# Démarrer l'application
-CMD ["npm", "run", "serve"]
+FROM nginx:stable-alpine
+COPY --from=build /usr/src/app/dist /usr/share/nginx/html
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]

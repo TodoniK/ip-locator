@@ -14,12 +14,12 @@ IP Locator est une application web qui permet de localiser une adresse IP. Elle 
 
 1. Clonez ce dépôt sur votre machine locale.
 2. Naviguez jusqu'au répertoire du projet et exécutez `npm install` pour installer les dépendances.
-3. Créez un fichier `.env` à la racine du projet et ajoutez-y vos variables d'environnement (par exemple, les informations de connexion à la base de données MongoDB).
+3. Créez un fichier `.env` à la racine du projet et ajoutez-y vos variables d'environnement (les informations de connexion à la base de données MongoDB).
 4. Exécutez `npm run dev` pour démarrer le serveur de développement.
 
 ## Utilisation
 
-Une fois le serveur démarré, vous pouvez accéder à l'API à l'adresse `http://localhost:8080`. La documentation de l'API est disponible à `http://localhost:8080/api-docs`.
+Une fois le serveur démarré, vous pouvez accéder à l'API à l'adresse `http://localhost:8089`. La documentation de l'API est disponible à `http://localhost:8089/api-docs`. Le frontend est disponible sur `http://localhost:3002`.
 
 ## Licence
 
