@@ -45,6 +45,8 @@ export default {
     bottom: auto;
     left: auto;
     transform: none;
+    max-width: 100%;
+    box-sizing: border-box;
   }
 
   .search-bar input {

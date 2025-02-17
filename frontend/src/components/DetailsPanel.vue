@@ -134,14 +134,16 @@ input {
 
 @media (max-width: 768px) {
   .details-panel {
-    position: fixed; /* Pour recouvrir la largeur de l’écran en mobile */
-    top: 0;
+    position: fixed;
+    bottom: 0;
     left: 0;
     right: 0;
-    height: auto;
+    height: 50vh;
     max-width: 100%;
-    min-height: 100vh; /* Pour s’assurer qu’il occupe tout l’écran */
-    overflow-y: auto;  /* Pour scroller si nécessaire */
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    overflow-y: auto;
+    padding: 1rem;
   }
 }
 </style>
