@@ -42,6 +42,13 @@ export default {
   left: 50%;
   transform: translateX(-50%);
   z-index: 1000;
+  border-radius: 5px;
+  animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateX(-50%) scale(0.95); }
+  to { opacity: 1; transform: translateX(-50%) scale(1); }
 }
 
 .bg-red {

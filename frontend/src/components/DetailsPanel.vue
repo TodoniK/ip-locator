@@ -87,9 +87,10 @@ export default {
   top: 0;
   right: 0;
   z-index: 1000;
-  background-color: rgba(255, 255, 255, 1);
-  box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+  background-color: #ffffff;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.15);
   max-width: 33%;
+  transition: all 0.3s ease-in-out;
 }
 
 .details-inner {

@@ -53,4 +53,24 @@ input:hover {
 button {
   margin-top: 10px;
 }
+
+@media (max-width: 768px) {
+  /* Suppression du positionnement fixe individuel */
+  div {
+    position: static;
+    width: 35%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+  }
+  div input {
+    font-size: 0.8em;
+    width: 100%;
+  }
+  div button {
+    font-size: 0.8em;
+    width: 100%;
+    margin-top: 5px;
+  }
+}
 </style>
