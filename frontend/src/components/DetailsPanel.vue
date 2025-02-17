@@ -131,4 +131,17 @@ input {
   padding: .3rem .5rem;
   border: 2px solid #bbb;
 }
+
+@media (max-width: 768px) {
+  .details-panel {
+    position: fixed; /* Pour recouvrir la largeur de l’écran en mobile */
+    top: 0;
+    left: 0;
+    right: 0;
+    height: auto;
+    max-width: 100%;
+    min-height: 100vh; /* Pour s’assurer qu’il occupe tout l’écran */
+    overflow-y: auto;  /* Pour scroller si nécessaire */
+  }
+}
 </style>

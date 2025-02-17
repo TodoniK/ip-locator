@@ -55,22 +55,23 @@ button {
 }
 
 @media (max-width: 768px) {
-  /* Suppression du positionnement fixe individuel */
   div {
-    position: static;
-    width: 35%;
+    position: static; /* Écrase la position absolue en mobile */
+    width: 100%;
     display: flex;
     flex-direction: column;
-    align-items: flex-end;
+    align-items: flex-start; /* Modifier ici pour alignement à gauche */
+    margin-bottom: 0.5rem;
   }
-  div input {
-    font-size: 0.8em;
-    width: 100%;
+
+  input[type="file"] {
+    width: 33.33%;
+    text-align: left; /* Modifier ici pour alignement du texte à gauche */
+    margin-bottom: 0.5rem;
   }
-  div button {
-    font-size: 0.8em;
-    width: 100%;
-    margin-top: 5px;
+
+  button {
+    width: 66.66%;
   }
 }
 </style>

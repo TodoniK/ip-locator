@@ -1,11 +1,13 @@
 <template>
   <div id="map">
     <CustomMap :markers="markers" :current-marker="currentIp" @marker-clicked="handleMarkerClick" />
-    <SearchBar @search-ip="handleSearch" />
+    <div id="mobile-footer">
+      <CSVImport @import-started="importFile" />
+      <SearchBar @search-ip="handleSearch" />
+    </div>
     <DetailsPanel v-if="Object.keys(currentIp).length !== 0" :current-ip="currentIp" @close-panel="currentIp = {}"
       @update-ip="updateIp" @delete-ip="deleteIp" @error="displayError" />
     <CustomModal :error="error" :isError="isError" @reset-error="error = null" />
-    <CSVImport @import-started="importFile" />
   </div>
 </template>
 
@@ -113,4 +115,19 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+@media (max-width: 768px) {
+  #mobile-footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    padding: 0.5rem;
+    box-sizing: border-box;
+    z-index: 2000;
+  }
+}
+</style>

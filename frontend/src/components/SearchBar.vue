@@ -33,4 +33,27 @@ export default {
   transform: translateX(-50%);
   z-index: 1000;
 }
+
+@media (max-width: 768px) {
+  .search-bar {
+    position: static !important;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    margin-top: 0.5rem;
+    bottom: auto;
+    left: auto;
+    transform: none;
+  }
+
+  .search-bar input {
+    width: 100%;
+    margin-bottom: 0.5rem;
+  }
+
+  .search-bar button {
+    width: 100%;
+  }
+}
 </style>
