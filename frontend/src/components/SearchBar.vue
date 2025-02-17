@@ -32,6 +32,8 @@ export default {
   left: 50%;
   transform: translateX(-50%);
   z-index: 1000;
+  border-radius: 0.5rem;
+  padding: 0.5rem;
 }
 
 @media (max-width: 768px) {
@@ -50,7 +52,7 @@ export default {
   }
 
   .search-bar input {
-    width: 100%;
+    width: 90%;
     margin-bottom: 0.5rem;
   }
 

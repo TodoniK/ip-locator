@@ -88,9 +88,11 @@ export default {
   right: 0;
   z-index: 1000;
   background-color: #ffffff;
-  box-shadow: 0 0 30px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   max-width: 33%;
   transition: all 0.3s ease-in-out;
+  border-top-left-radius: 1rem;
+  border-bottom-left-radius: 1rem;
 }
 
 .details-inner {
@@ -134,14 +136,12 @@ input {
 
 @media (max-width: 768px) {
   .details-panel {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
     height: 50vh;
     max-width: 100%;
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
+    border-radius: 20px;
     overflow-y: auto;
     padding: 1rem;
   }

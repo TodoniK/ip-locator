@@ -34,6 +34,8 @@ div {
   flex-direction: column;
   align-items: flex-start;
   justify-content: center;
+  border-radius: 0.5rem;
+  padding: 0.5rem;
 }
 
 input {
@@ -56,21 +58,20 @@ button {
 
 @media (max-width: 768px) {
   div {
-    position: static; /* Écrase la position absolue en mobile */
+    position: static;
     width: 100%;
     display: flex;
     flex-direction: column;
-    align-items: flex-start; /* Modifier ici pour alignement à gauche */
-    margin-bottom: 0.5rem;
+    align-items: flex-start;
   }
 
   input[type="file"] {
-    width: 33.33%;
-    text-align: left; /* Modifier ici pour alignement du texte à gauche */
-    margin-bottom: 0.5rem;
+    text-align: left;
+    margin-left: 1rem;
   }
 
   button {
+    margin-left: 1rem;
     width: 66.66%;
   }
 }
