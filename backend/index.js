@@ -2,7 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const { connectToDatabase, pingDatabase } = require('./db/database');
-const { ipController } = require('./controllers/IPController');
+const { ipController } = require('./controllers/ipController');
 const IP = require('./models/IP');
 const swaggerUi = require('swagger-ui-express');
 const swaggerJsdoc = require('swagger-jsdoc');
