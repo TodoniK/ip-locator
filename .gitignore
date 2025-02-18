@@ -131,6 +131,6 @@ dist
 .pnp.*
 
 package-lock.json
-ip-loc-back/package-lock.json
-ip-loc-front/package-lock.json
-ip-loc-back/swagger.json
+backend/package-lock.json
+frontend/package-lock.json
+backend/swagger.json

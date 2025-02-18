@@ -40,7 +40,7 @@ fs.writeFile('./swagger.json', JSON.stringify(swaggerSpec, null, 2), (err) => {
 app.use(express.json());
 
 app.use(cors({
-  origin: 'http://localhost:3002',
+  origin: process.env.FRONT_URL
 }));
 
 // Routes

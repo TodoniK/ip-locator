@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BASE_URL = 'http://localhost:8089';
+const BASE_URL = process.env.VUE_APP_API_URL;
 
 const postIp = async (ipObj) => {
   const response = await axios.post(`${BASE_URL}/ip`, ipObj);
