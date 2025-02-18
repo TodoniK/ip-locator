@@ -7,6 +7,9 @@ services:
       - "8089:8089"
     environment:
       - NODE_ENV=development
+    volumes:
+      - ./backend:/usr/src/app
+      - ./backend/node_modules:/usr/src/app/node_modules
     networks:
       - app-network
 
