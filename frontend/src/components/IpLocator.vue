@@ -116,7 +116,17 @@ export default {
 </script>
 
 <style>
+#map {
+  height: calc(100vh - 120px);
+  position: relative;
+  overflow: hidden;
+}
+
 @media (max-width: 768px) {
+  #map {
+    height: calc(100vh - 100px);
+  }
+
   #mobile-footer {
     position: fixed;
     bottom: 0;
@@ -124,10 +134,13 @@ export default {
     width: 100%;
     display: flex;
     flex-direction: column;
-    align-items: flex-end;
-    padding: 0.5rem;
+    align-items: stretch;
+    padding: var(--spacing-md);
     box-sizing: border-box;
     z-index: 2000;
+    background: linear-gradient(to top, rgba(0,0,0,0.1) 0%, transparent 100%);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
   }
 }
 </style>
