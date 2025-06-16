@@ -96,18 +96,27 @@ export default {
   border-radius: var(--border-radius-lg);
   padding: 0;
   overflow: hidden;
-  box-shadow: var(--shadow-xl);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 
+    var(--shadow-xl),
+    0 0 30px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.6);
 }
 
 .notification.error {
-  background: linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(220, 38, 38, 0.05) 100%);
-  border-color: rgba(239, 68, 68, 0.3);
+  background: 
+    linear-gradient(135deg, rgba(239, 68, 68, 0.85) 0%, rgba(220, 38, 38, 0.75) 100%),
+    rgba(0, 0, 0, 0.8);
+  border-color: rgba(239, 68, 68, 0.9);
+  backdrop-filter: blur(10px);
 }
 
 .notification.success {
-  background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(5, 150, 105, 0.05) 100%);
-  border-color: rgba(16, 185, 129, 0.3);
+  background: 
+    linear-gradient(135deg, rgba(16, 185, 129, 0.85) 0%, rgba(5, 150, 105, 0.75) 100%),
+    rgba(0, 0, 0, 0.8);
+  border-color: rgba(16, 185, 129, 0.9);
+  backdrop-filter: blur(10px);
 }
 
 .notification-icon {
@@ -124,13 +133,15 @@ export default {
 }
 
 .notification.error .notification-icon {
-  background: rgba(239, 68, 68, 0.2);
-  color: var(--danger-color);
+  background: rgba(255, 255, 255, 0.9);
+  color: #dc2626;
+  border: 2px solid rgba(239, 68, 68, 0.8);
 }
 
 .notification.success .notification-icon {
-  background: rgba(16, 185, 129, 0.2);
-  color: var(--success-color);
+  background: rgba(255, 255, 255, 0.9);
+  color: #059669;
+  border: 2px solid rgba(16, 185, 129, 0.8);
 }
 
 .notification-content {
@@ -142,22 +153,24 @@ export default {
   font-weight: 600;
   font-size: 1rem;
   margin-bottom: var(--spacing-xs);
-  color: var(--text-primary);
+  color: #ffffff;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
 }
 
 .notification-message {
   font-size: 0.875rem;
   line-height: 1.5;
-  color: var(--text-secondary);
+  color: rgba(255, 255, 255, 0.95);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
 
 .notification-close {
   position: absolute;
   top: var(--spacing-md);
   right: var(--spacing-md);
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  color: var(--text-muted);
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  color: #4b5563;
   padding: var(--spacing-xs);
   min-width: auto;
   width: 32px;
@@ -166,11 +179,13 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: all 0.2s ease;
 }
 
 .notification-close:hover {
-  background: rgba(255, 255, 255, 0.2);
-  color: var(--text-primary);
+  background: rgba(255, 255, 255, 1);
+  color: #1f2937;
+  transform: scale(1.1);
 }
 
 .notification-progress {

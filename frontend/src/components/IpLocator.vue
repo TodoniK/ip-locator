@@ -1,11 +1,11 @@
 <template>
   <div id="map">
     <CustomMap :markers="markers" :current-marker="currentIp" @marker-clicked="handleMarkerClick" />
-    <div id="mobile-footer">
-      <CSVImport @import-started="importFile" />
-      <SearchBar @search-ip="handleSearch" />
+    <div id="mobile-footer" :class="{ 'hidden-mobile': showDetailsPanel }">
+      <SearchBar @search-ip="handleSearch" @toggle-csv-import="toggleCSVImport" :show-csv-import="showCSVImport" />
+      <CSVImport v-if="showCSVImport" @import-started="importFile" @close="showCSVImport = false" />
     </div>
-    <DetailsPanel v-if="Object.keys(currentIp).length !== 0" :current-ip="currentIp" @close-panel="currentIp = {}"
+    <DetailsPanel v-if="showDetailsPanel" :current-ip="currentIp" @close-panel="closeDetailsPanel"
       @update-ip="updateIp" @delete-ip="deleteIp" @error="displayError" />
     <CustomModal :error="error" :isError="isError" @reset-error="error = null" />
   </div>
@@ -27,7 +27,13 @@ export default {
       currentIp: {},
       error: null,
       isError: true,
+      showCSVImport: false,
     };
+  },
+  computed: {
+    showDetailsPanel() {
+      return Object.keys(this.currentIp).length !== 0;
+    }
   },
   methods: {
     async handleSearch(ip) {
@@ -53,6 +59,7 @@ export default {
           .then(response => {
             this.currentIp = response;
             this.error = null;
+            this.showCSVImport = false; // Fermer l'import CSV quand on ouvre les détails
           })
           .catch(error => {
             this.isError = true;
@@ -61,6 +68,16 @@ export default {
       } catch (error) {
         this.isError = true;
         this.error = error.response.data.message;
+      }
+    },
+    closeDetailsPanel() {
+      this.currentIp = {};
+    },
+    toggleCSVImport() {
+      this.showCSVImport = !this.showCSVImport;
+      // Fermer les détails si on ouvre l'import CSV
+      if (this.showCSVImport) {
+        this.currentIp = {};
       }
     },
     updateIp(updateObj) {
@@ -85,6 +102,7 @@ export default {
         .then(response => {
           this.isError = false;
           this.error = response.message;
+          this.showCSVImport = false; // Fermer l'import après succès
         })
         .catch(error => {
           let errorMessage = error.response.data.message + '. ';
@@ -141,6 +159,13 @@ export default {
     background: linear-gradient(to top, rgba(0,0,0,0.1) 0%, transparent 100%);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
+    transition: all var(--transition-normal);
+  }
+
+  #mobile-footer.hidden-mobile {
+    transform: translateY(100%);
+    opacity: 0;
+    pointer-events: none;
   }
 }
 </style>
