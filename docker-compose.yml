@@ -6,7 +6,9 @@ services:
     ports:
       - "8089:8089"
     environment:
-      - NODE_ENV=production
+      - NODE_ENV=${NODE_ENV:-production}
+      - MONGODB_URI=${MONGODB_URI}
+      - FRONT_URL=${FRONT_URL}
     networks:
       - app-network
 
@@ -14,10 +16,12 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
+      args:
+        VITE_API_URL: ${VITE_API_URL}
     ports:
       - "3002:80"
     environment:
-      - NODE_ENV=production
+      - NODE_ENV=${NODE_ENV:-production}
     networks:
       - app-network
 
