@@ -132,3 +132,4 @@ dist
 
 frontend/package-lock.json
 backend/swagger.json
+backend/.DS_Store
