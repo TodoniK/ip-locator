@@ -2,8 +2,8 @@
   <div style="height:100vh; width:100vw">
     <l-map ref="map" :zoom="3"
       :center="currentMarker.lat && currentMarker.lon ? [currentMarker.lat, currentMarker.lon] : [47.41322, -1.219482]">
-      <l-tile-layer url="https://tiles.stadiamaps.com/tiles/outdoors/{z}/{x}/{y}{r}.png" layer-type="base"
-        name="OpenStreetMap"></l-tile-layer>
+      <l-tile-layer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" layer-type="base"
+        name="OpenStreetMap" attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'></l-tile-layer>
 
       <l-marker v-for="(marker) in markers" :key="marker.nom" :lat-lng="[marker.lat, marker.lon]"
         @click="onMarkerClick(marker.nom)">
