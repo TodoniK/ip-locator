@@ -3,8 +3,6 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
-    ports:
-      - "8089:8089"
     environment:
       - NODE_ENV=${NODE_ENV:-production}
       - MONGODB_URI=${MONGODB_URI}
@@ -17,9 +15,7 @@ services:
       context: ./frontend
       dockerfile: Dockerfile
       args:
-        VITE_API_URL: ${VITE_API_URL}
-    ports:
-      - "3002:80"
+        VITE_API_URL: ${VITE_API_URL:-/api}
     environment:
       - NODE_ENV=${NODE_ENV:-production}
     networks:
