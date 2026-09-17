@@ -9,6 +9,7 @@ services:
       - FRONT_URL=${FRONT_URL}
     networks:
       - app-network
+      - dokploy-network
 
   frontend:
     build:
@@ -24,3 +25,5 @@ services:
 networks:
   app-network:
     driver: bridge
+  dokploy-network:
+    external: true
