@@ -1,16 +1,11 @@
-# Utiliser une image Node.js officielle plus récente
-FROM node:22
+FROM node:22-alpine
 
-# Définir le répertoire de travail
 WORKDIR /usr/src/app
 
-# Copier les fichiers package.json et package-lock.json
 COPY package*.json ./
 
-# Installer les dépendances en production
-RUN npm ci --only=production
+RUN npm ci --omit=dev
 
-# Copier le reste des fichiers de l'application
 COPY . .
 
 # Exposer le port de l'application
